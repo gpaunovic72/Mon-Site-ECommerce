@@ -9,7 +9,7 @@ export default function Header() {
   const [search, setSearch] = useState<string>("");
 
   return (
-    <header className="flex flex-col items-center gap-5 bg-gradient-to-t from-black from-35% to-[#666666] py-9 ">
+    <header className="flex flex-col items-center gap-5 bg-gradient-to-t from-black to-[#666666] py-9 ">
       <div className="flex justify-center gap-28">
         <nav className="flex items-center gap-10 bg-white rounded-xl px-5 h-20">
           <Image
@@ -35,12 +35,12 @@ export default function Header() {
           <Button
             href="/login"
             text="Connexion"
-            className="bg-[#F85F00] text-xl cursor-pointer"
+            className="bg-[#F85F00] text-white font-bold text-xl cursor-pointer"
           />
           <Button
             href="/signup"
             text="Inscription"
-            className="ml-5 bg-[#C50000] text-xl cursor-pointer"
+            className="ml-5 bg-[#C50000] text-white font-bold text-xl cursor-pointer"
           />
         </div>
       </div>
