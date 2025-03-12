@@ -8,8 +8,8 @@ type BannerProps = {
 
 export default function Banner({ title, picture }: BannerProps) {
   return (
-    <div className="flex items-center justify-center gap-12">
-      <div className="flex flex-col items-center gap-12 ">
+    <div className="flex items-center justify-center gap-12 pb-2.5">
+      <div className="flex flex-col items-center gap-12">
         <h1 className="text-white text-3xl">{title}</h1>
         <Button
           href="#"
