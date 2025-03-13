@@ -35,12 +35,12 @@ export default function Header() {
           <Button
             href="/login"
             text="Connexion"
-            className="bg-[#F85F00] text-white font-bold text-xl cursor-pointer"
+            className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer"
           />
           <Button
             href="/signup"
             text="Inscription"
-            className="ml-5 bg-[#C50000] text-white font-bold text-xl cursor-pointer"
+            className="ml-5 bg-[#C50000] hover:bg-[#c50000b7] text-white font-bold text-xl cursor-pointer"
           />
         </div>
       </div>

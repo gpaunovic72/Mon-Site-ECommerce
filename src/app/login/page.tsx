@@ -1,10 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { LoginFormData, LoginFormSchema } from "./schemas/schemas";
 
 export default function Login() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -21,6 +23,7 @@ export default function Login() {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       alert("Connexion réussie!");
       reset();
+      router.push("/");
     } catch (error) {
       console.error("Erreur :", error);
     }
@@ -43,6 +46,7 @@ export default function Login() {
               {...register("email")}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focuse:ring-[#F85F00] focus:border-[#F85F00]"
               placeholder="Entrez votre adresse email"
+              autoComplete="email"
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -63,6 +67,7 @@ export default function Login() {
               {...register("password")}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focuse:ring-[#F85F00] focus:border-[#F85F00]"
               placeholder="Entrez votre mot de passe"
+              autoComplete="password"
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">
