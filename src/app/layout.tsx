@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body>
+      <body className="max-h-fit">
         <Header />
         {children}
         <Footer />
