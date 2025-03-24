@@ -19,15 +19,36 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      console.log("Form submitted:", data);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Email ou mot de passe incorrect");
+      }
+
+      localStorage.setItem("token", result.token);
+
+      window.dispatchEvent(new Event("login"));
+
       alert("Connexion réussie!");
       reset();
       router.push("/");
     } catch (error) {
-      console.error("Erreur :", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Email ou mot de passe incorrect";
+      alert(errorMessage);
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
@@ -44,7 +65,7 @@ export default function Login() {
               id="email"
               type="text"
               {...register("email")}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focuse:ring-[#F85F00] focus:border-[#F85F00]"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-[#F85F00] focus:border-[#F85F00]"
               placeholder="Entrez votre adresse email"
               autoComplete="email"
             />
@@ -65,9 +86,9 @@ export default function Login() {
               id="password"
               type="password"
               {...register("password")}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focuse:ring-[#F85F00] focus:border-[#F85F00]"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-[#F85F00] focus:border-[#F85F00]"
               placeholder="Entrez votre mot de passe"
-              autoComplete="password"
+              autoComplete="current-password"
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">

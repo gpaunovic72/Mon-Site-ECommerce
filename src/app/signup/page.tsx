@@ -19,13 +19,27 @@ export default function Signup() {
 
   const onSubmit = async (data: SignupFormData) => {
     try {
-      console.log("Form submitted:", data);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Une erreur est survenue");
+      }
+
       alert("Inscription réussie!");
       reset();
       router.push("/login");
     } catch (error) {
-      console.error("Erreur :", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Une erreur est survenue";
+      alert(errorMessage);
     }
   };
   return (
