@@ -1,5 +1,8 @@
+"use client";
+
+import { Category as CategoryType } from "@prisma/client";
 import Image from "next/image";
-import { categoryList } from "../datas/categoryList";
+import { useEffect, useState } from "react";
 
 type CategoryProps = {
   onCategorySelected: (category: string) => void;
@@ -10,36 +13,49 @@ export default function Category({
   onCategorySelected,
   selectedCategory,
 }: CategoryProps) {
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des catégories", error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   return (
     <div id="category" className="bg-white py-8">
       <h2 className="text-black text-2xl font-bold text-center">Catégories</h2>
       <ul className="flex justify-center mt-8 space-x-6">
-        {categoryList.map((category) => (
+        {categories.map((category) => (
           <li key={category.id} className="cursor-pointer">
             <Image
               src={category.icon}
-              alt={`Icon de ${category.categoryName}`}
+              alt={`Icon de ${category.name}`}
               width={100}
               height={100}
               onClick={() => {
-                if (category.categoryName === "Voir Tout") {
+                if (category.name === "Voir Tout") {
                   onCategorySelected("");
                 } else {
                   onCategorySelected(
-                    selectedCategory === category.categoryName
-                      ? ""
-                      : category.categoryName
+                    selectedCategory === category.name ? "" : category.name
                   );
                 }
               }}
               className={
-                selectedCategory === category.categoryName ||
-                (category.categoryName === "Voir Tout" && !selectedCategory)
+                selectedCategory === category.name ||
+                (category.name === "Voir Tout" && !selectedCategory)
                   ? "border-2 border-[#F85F00]"
                   : ""
               }
             />
-            <p className="text-center mt-2 text-sm">{category.categoryName}</p>
+            <p className="text-center mt-2 text-sm">{category.name}</p>
           </li>
         ))}
       </ul>
