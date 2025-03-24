@@ -34,7 +34,6 @@ export default function Login() {
       }
 
       localStorage.setItem("token", result.token);
-
       window.dispatchEvent(new Event("login"));
 
       alert("Connexion réussie!");

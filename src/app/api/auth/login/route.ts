@@ -9,17 +9,27 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
     const parsedData = LoginFormSchema.parse(data);
-    const { email, password } = parsedData as LoginFormData;
+    const { email, password: inputPassword } = parsedData as LoginFormData;
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
+    const userWithoutPassword = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        password: true,
+      },
+    });
+
+    if (!userWithoutPassword) {
       return NextResponse.json(
         { error: "Email ou mot de passe incorrect" },
         { status: 401 }
       );
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      inputPassword,
+      userWithoutPassword.password
+    );
     if (!isPasswordValid) {
       return NextResponse.json(
         { error: "Email ou mot de passe incorrect" },
@@ -27,12 +37,22 @@ export async function POST(request: Request) {
       );
     }
 
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        name: true,
+        firstname: true,
+        email: true,
+      },
+    });
+
     if (!process.env.JWT_SECRET) {
       throw new Error("Missing JWT_SECRET environment variable");
     }
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user?.id, email: user?.email },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -41,12 +61,7 @@ export async function POST(request: Request) {
       {
         message: "Connexion réussie",
         token,
-        user: {
-          id: user.id,
-          name: user.name,
-          firstname: user.firstname,
-          email: user.email,
-        },
+        user,
       },
       { status: 200 }
     );
