@@ -44,6 +44,7 @@ export async function POST(request: Request) {
         name: true,
         firstname: true,
         email: true,
+        role: true,
       },
     });
 
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
     }
 
     const token = jwt.sign(
-      { userId: user?.id, email: user?.email },
+      { userId: user?.id, email: user?.email, role: user?.role },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -60,8 +61,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         message: "Connexion réussie",
-        token,
         user,
+        token,
       },
       { status: 200 }
     );

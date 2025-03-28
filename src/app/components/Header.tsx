@@ -7,6 +7,31 @@ import Button from "./Button";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkAdminRole = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await fetch("/api/auth/checkRole", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsAdmin(data.isAdmin);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la vérification du rôle:", error);
+      }
+    };
+
+    checkAdminRole();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,7 +71,7 @@ export default function Header() {
             />
           </Link>
         </nav>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-5">
           {isLoggedIn ? (
             <Button
               href="/"
@@ -69,6 +94,13 @@ export default function Header() {
               href="/signup"
               text="Inscription"
               className="ml-5 bg-[#C50000] hover:bg-[#c50000b7] text-white font-bold text-xl cursor-pointer"
+            />
+          )}
+          {isAdmin && (
+            <Button
+              href="/addProducts"
+              text="Ajouter un produit"
+              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer"
             />
           )}
         </div>

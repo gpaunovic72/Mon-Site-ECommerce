@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { productsList } from "../datas/productsList";
 import Button from "./Button";
 
@@ -6,7 +9,34 @@ type CardProps = {
   selectedCategory: string | null;
   search: string;
 };
+
 export default function Card({ selectedCategory, search }: CardProps) {
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkAdminRole = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await fetch("/api/auth/checkRole", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsAdmin(data.isAdmin);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la vérification du rôle:", error);
+      }
+    };
+
+    checkAdminRole();
+  }, []);
+
   let filteredProducts = selectedCategory
     ? productsList.filter((product) => product.category === selectedCategory)
     : productsList;
@@ -42,11 +72,27 @@ export default function Card({ selectedCategory, search }: CardProps) {
             <p className="text-center text-black font-medium">
               {product.price} €
             </p>
-            <Button
-              href={`/items/${product.id}`}
-              text="Voir plus"
-              className="bg-black text-white font-bold cursor-pointer"
-            />
+            <div className="flex flex-col gap-2">
+              <Button
+                href={`/items/${product.id}`}
+                text="Voir plus"
+                className="bg-black text-white font-bold cursor-pointer"
+              />
+              {isAdmin && (
+                <div className="flex gap-2 justify-center">
+                  <Button
+                    href="#"
+                    text="Modifier"
+                    className="bg-blue-500 text-white font-bold cursor-pointer hover:bg-blue-600 transition-colors duration-300"
+                  />
+                  <Button
+                    href="#"
+                    text="Supprimer"
+                    className="bg-red-500 text-white font-bold cursor-pointer hover:bg-red-600 transition-colors duration-300 "
+                  />
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
