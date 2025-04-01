@@ -39,6 +39,7 @@ export default function Category({
               alt={`Icon de ${category.name}`}
               width={100}
               height={100}
+              style={{ width: "auto", height: "100px" }}
               onClick={() => {
                 if (category.name === "Voir Tout") {
                   onCategorySelected("");

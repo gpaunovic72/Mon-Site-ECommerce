@@ -13,6 +13,7 @@ export default function Footer() {
               alt="Icon adresse"
               width={40}
               height={40}
+              style={{ width: "auto", height: "40px" }}
             />
             <p className="text-white text-lg font-light w-[64%] text-start my-4">
               83, rue Pierre Motte, 97400 Saint-Denis
@@ -24,6 +25,7 @@ export default function Footer() {
               alt="Icon téléphone"
               width={40}
               height={40}
+              style={{ width: "auto", height: "40px" }}
             />
             <p className="text-white text-lg font-light w-[64%] text-start my-4">
               01 44 80 55 68
@@ -35,6 +37,7 @@ export default function Footer() {
               alt="Icon email"
               width={40}
               height={40}
+              style={{ width: "auto", height: "40px" }}
             />
             <p className="text-white text-lg font-light w-[64%] text-start my-4">
               aeled1969@gmail.com
@@ -47,6 +50,7 @@ export default function Footer() {
                 alt="Icon Twitter"
                 width={50}
                 height={41}
+                style={{ width: "auto", height: "auto" }}
                 className="cursor-pointer"
               />
             </Link>
@@ -56,6 +60,7 @@ export default function Footer() {
                 alt="Icon instagram"
                 width={50}
                 height={50}
+                style={{ width: "auto", height: "auto" }}
                 className="cursor-pointer"
               />
             </Link>
@@ -65,6 +70,7 @@ export default function Footer() {
                 alt="Icon facebook"
                 width={50}
                 height={50}
+                style={{ width: "auto", height: "auto" }}
                 className="cursor-pointer"
               />
             </Link>

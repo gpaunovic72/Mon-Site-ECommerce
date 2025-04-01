@@ -26,6 +26,7 @@ export default function Items() {
             alt={`Photo de ${product.name}`}
             width={400}
             height={400}
+            style={{ width: "auto", height: "400px" }}
           />
           <p className="text-gray-600 text-base font-bold">
             Prix: {product.price} €

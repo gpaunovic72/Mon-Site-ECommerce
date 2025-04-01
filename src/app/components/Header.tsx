@@ -57,6 +57,7 @@ export default function Header() {
             alt="Logo Amazon"
             width={72}
             height={72}
+            style={{ width: "auto", height: "72px" }}
           />
           <Link href="/">Accueil</Link>
           <Link href="/#category">Catégories</Link>

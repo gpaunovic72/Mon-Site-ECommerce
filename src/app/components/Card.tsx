@@ -66,6 +66,7 @@ export default function Card({ selectedCategory, search }: CardProps) {
               alt={`Photo de ${product.name}`}
               width={230}
               height={230}
+              style={{ width: "auto", height: "230px" }}
               className="object-cover rounded-t-2xl w-full"
             />
             <h3 className="text-center text-black font-bold">{product.name}</h3>

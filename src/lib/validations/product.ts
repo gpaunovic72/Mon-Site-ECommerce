@@ -2,15 +2,15 @@ import { z } from "zod";
 
 export const ProductSchema = z.object({
   name: z.string().min(1, "Le nom du produit est obligatoire"),
-  // price: z.number().positive("Le prix doit être un nombre positif"),
-  // picture: z.string().optional(),
-  // description: z.string().optional(),
-  // categoryId: z
-  //   .number()
-  //   .positive("Le numéro de catégorie doit être un nombre positif")
-  //   .min(1, "Le numéro de catégorie doit être entre 1 et 5")
-  //   .max(5, "Le numéro de catégorie doit être entre 1 et 5")
-  //   .int("Le numéro de catégorie doit être un nombre entier"),
+  price: z.number().positive("Le prix doit être un nombre positif"),
+  picture: z.string().url("L'URL de l'image est invalide"),
+  description: z.string().optional(),
+  categoryId: z
+    .number()
+    .positive("Le numéro de catégorie doit être un nombre positif")
+    .min(1, "Le numéro de catégorie doit être entre 1 et 5")
+    .max(5, "Le numéro de catégorie doit être entre 1 et 5")
+    .int("Le numéro de catégorie doit être un nombre entier"),
 });
 
 export type ProductInput = z.infer<typeof ProductSchema>;
@@ -28,7 +28,7 @@ export const UpdateProductSchema = z.object({
   id: z.number().int().readonly(),
   name: z.string().min(1, "Le nom du produit est obligatoire"),
   price: z.number().positive("Le prix doit être un nombre positif"),
-  picture: z.string().optional(),
+  picture: z.string().url("L'URL de l'image est invalide"),
   description: z.string().optional(),
   categoryId: z
     .number()
