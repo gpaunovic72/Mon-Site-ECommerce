@@ -1,6 +1,6 @@
 import { validateAdmin } from "@/lib/middleware/auth";
 import prisma from "@/lib/prisma";
-import { UpdateProductSchema } from "@/lib/validations/product";
+import { UpdateProductSchema } from "@/lib/validations/products";
 import { NextResponse } from "next/server";
 
 export async function PUT(request: Request) {

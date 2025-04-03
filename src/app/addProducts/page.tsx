@@ -29,7 +29,6 @@ export default function AddProducts() {
 
   const onSubmit = async (data: AddProductInput) => {
     try {
-      console.log(data);
       const formData = new FormData();
       formData.append("picture", data.picture);
 
@@ -46,7 +45,6 @@ export default function AddProducts() {
       }
       const uploadResult = await uploadResponse.json();
       const pictureUrl = uploadResult.url;
-      console.log("Url de l'image:", pictureUrl);
 
       const productResponse = await fetch("/api/products/createItem", {
         method: "POST",
@@ -69,12 +67,9 @@ export default function AddProducts() {
         );
       }
 
-      const productResult = await productResponse.json();
-      console.log("Produit créé:", productResult);
       reset();
       setPreviewUrl(null);
       router.push("/");
-      console.log(productResult);
     } catch (error) {
       console.error("Erreur lors de l'ajout du produit:", error);
     }
@@ -95,7 +90,7 @@ export default function AddProducts() {
               width={300}
               height={300}
               style={{ width: "auto", height: "300px" }}
-              className="rounded-md object-cover"
+              className="rounded-md "
             />
           )}
           <div className="flex flex-col gap-3">

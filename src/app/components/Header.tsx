@@ -1,52 +1,14 @@
 "use client";
 
+import { useAdminRole } from "@/hooks/useAdminRole";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import Button from "./Button";
 
 export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
-  useEffect(() => {
-    const checkAdminRole = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        const response = await fetch("/api/auth/checkRole", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setIsAdmin(data.isAdmin);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la vérification du rôle:", error);
-      }
-    };
-
-    checkAdminRole();
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
-
-  useEffect(() => {
-    const handleLogin = () => {
-      setIsLoggedIn(!!localStorage.getItem("token"));
-    };
-
-    window.addEventListener("login", handleLogin);
-
-    return () => window.removeEventListener("login", handleLogin);
-  }, []);
+  const { isAdmin } = useAdminRole();
+  const { isLoggedIn, handleLogout } = useAuthStatus();
 
   return (
     <header className="flex flex-col items-center gap-5 bg-gradient-to-t from-black to-[#666666] py-9 ">
@@ -57,7 +19,7 @@ export default function Header() {
             alt="Logo Amazon"
             width={72}
             height={72}
-            style={{ width: "auto", height: "72px" }}
+            style={{ width: "auto", height: "auto" }}
           />
           <Link href="/">Accueil</Link>
           <Link href="/#category">Catégories</Link>
@@ -69,6 +31,7 @@ export default function Header() {
               alt="Panier"
               width={40}
               height={40}
+              style={{ width: "auto", height: "auto" }}
             />
           </Link>
         </nav>
@@ -76,10 +39,7 @@ export default function Header() {
           {isLoggedIn ? (
             <Button
               href="/"
-              onClick={() => {
-                localStorage.removeItem("token");
-                setIsLoggedIn(false);
-              }}
+              onClick={handleLogout}
               text="Déconnexion"
               className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer"
             />
@@ -101,7 +61,7 @@ export default function Header() {
             <Button
               href="/addProducts"
               text="Ajouter un produit"
-              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer"
+              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer whitespace-nowrap"
             />
           )}
         </div>

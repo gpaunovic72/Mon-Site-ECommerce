@@ -1,6 +1,6 @@
 import { validateAdmin } from "@/lib/middleware/auth";
 import prisma from "@/lib/prisma";
-import { DeleteProductSchema } from "@/lib/validations/product";
+import { DeleteProductSchema } from "@/lib/validations/products";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request) {

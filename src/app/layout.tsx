@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Mini site d'e-commerce pour une boutique en ligne",
 };
 
+const deleteHydratationWarning = true;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -14,7 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="max-h-fit">
+      <body
+        suppressHydrationWarning={deleteHydratationWarning}
+        className="max-h-fit"
+      >
         <Header />
         {children}
         <Footer />

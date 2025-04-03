@@ -14,10 +14,10 @@ export default function Button({
   onClick,
 }: ButtonProps) {
   return (
-    <Link href={href}>
+    <Link href={href} className="w-full">
       <button
         onClick={onClick}
-        className={`rounded-4xl py-3 px-10 ${className}`}
+        className={`w-full rounded-4xl py-2 px-4 text-center ${className}`}
       >
         {text}
       </button>

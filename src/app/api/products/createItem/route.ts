@@ -1,6 +1,6 @@
 import { validateAdmin } from "@/lib/middleware/auth";
 import prisma from "@/lib/prisma";
-import { ProductSchema } from "@/lib/validations/product";
+import { ProductSchema } from "@/lib/validations/products";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
