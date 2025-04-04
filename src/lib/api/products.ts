@@ -1,29 +1,39 @@
 import { Product } from "@prisma/client";
 
 export async function fetchProducts(): Promise<Product[]> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products/getItems`,
-    {
-      cache: "no-store",
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/getItems`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des produits");
     }
-  );
 
-  if (!response.ok) {
-    throw new Error("Erreur lors de la récupération des produits");
+    return response.json();
+  } catch (error) {
+    console.error("Erreur lors de la récupération des produits", error);
+    throw error;
   }
-
-  return response.json();
 }
 
-export async function fetchProductOneProduct(id: string): Promise<Product> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products/getOneItem/${id}`,
-    {
-      cache: "no-store",
+export async function fetchOneProduct(id: string): Promise<Product> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/getOneItem?id=${id}`,
+      {
+        cache: "no-store",
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération du produit");
     }
-  );
-  if (!response.ok) {
-    throw new Error("Erreur lors de la récupération du produit");
+    return response.json();
+  } catch (error) {
+    console.error("Erreur lors de la récupération du produit", error);
+    throw error;
   }
-  return response.json();
 }

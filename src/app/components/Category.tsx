@@ -45,12 +45,14 @@ export default function Category({
                   onCategorySelected("");
                 } else {
                   onCategorySelected(
-                    selectedCategory === category.name ? "" : category.name
+                    selectedCategory === category.name
+                      ? ""
+                      : category.id.toString()
                   );
                 }
               }}
               className={
-                selectedCategory === category.name ||
+                selectedCategory === category.id.toString() ||
                 (category.name === "Voir Tout" && !selectedCategory)
                   ? "border-2 border-[#F85F00]"
                   : ""

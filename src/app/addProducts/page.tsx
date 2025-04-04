@@ -184,10 +184,10 @@ export default function AddProducts() {
                 {...register("categoryId")}
                 className="border-2 border-gray-300 rounded-md p-2"
               >
-                <option value="1">Chaussures</option>
-                <option value="2">Sport</option>
-                <option value="3">Jeux-Vidéo</option>
-                <option value="4">Électronique</option>
+                <option value="2">Chaussures</option>
+                <option value="3">Sport</option>
+                <option value="4">Jeux-Vidéo</option>
+                <option value="5">Électronique</option>
               </select>
               {errors.categoryId && (
                 <p className="text-red-500 text-sm mt-1">

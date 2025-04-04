@@ -2,7 +2,7 @@
 
 import { Product } from "@prisma/client";
 import { useState } from "react";
-import Card from "./Card";
+import Cards from "./Cards";
 import Category from "./Category";
 import Input from "./Input";
 
@@ -19,7 +19,6 @@ export default function FilterControls({
   const handleCategorySelected = (category: string) => {
     setSelectedCategory(category === selectedCategory ? null : category);
   };
-
   return (
     <div>
       <Input onSearch={setSearch} />
@@ -27,7 +26,7 @@ export default function FilterControls({
         onCategorySelected={handleCategorySelected}
         selectedCategory={selectedCategory}
       />
-      <Card
+      <Cards
         products={initialProducts}
         selectedCategory={selectedCategory}
         search={search}

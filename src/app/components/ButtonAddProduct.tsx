@@ -1,14 +1,14 @@
 "use Client";
-import { type Products } from "../datas/productsList";
+import { Product } from "@prisma/client";
 
 type ButtonAddProductProps = {
-  product: Products;
+  product: Product;
 };
 
 export default function ButtonAddProduct({ product }: ButtonAddProductProps) {
   const addToCart = () => {
     console.log("Ajout de ", product);
-    const currentCarts: Products[] = JSON.parse(
+    const currentCarts: Product[] = JSON.parse(
       localStorage.getItem("carts") || "[]"
     );
 
