@@ -41,27 +41,27 @@ export default function Header() {
               href="/"
               onClick={handleLogout}
               text="Déconnexion"
-              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer"
+              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer hover:scale-105 transition-colors duration-300"
             />
           ) : (
             <Button
               href="/login"
               text="Connexion"
-              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer"
+              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer hover:scale-105 transition-colors duration-300"
             />
           )}
           {!isLoggedIn && (
             <Button
               href="/signup"
               text="Inscription"
-              className="ml-5 bg-[#C50000] hover:bg-[#c50000b7] text-white font-bold text-xl cursor-pointer"
+              className="ml-5 bg-[#C50000] hover:bg-[#c50000b7] text-white font-bold text-xl cursor-pointer hover:scale-105 transition-colors duration-300"
             />
           )}
           {isAdmin && (
             <Button
               href="/addProducts"
               text="Ajouter un produit"
-              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer whitespace-nowrap"
+              className="bg-[#F85F00] hover:bg-[#e04e00] text-white font-bold text-xl cursor-pointer whitespace-nowrap hover:scale-105 transition-colors duration-300"
             />
           )}
         </div>

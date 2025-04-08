@@ -1,6 +1,5 @@
 import { validateAdmin } from "@/lib/middleware/auth";
 import prisma from "@/lib/prisma";
-import { DeleteProductSchema } from "@/lib/validations/products";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request) {
@@ -13,11 +12,29 @@ export async function DELETE(request: Request) {
       );
     }
 
-    const data = await request.json();
-    const validatedData = DeleteProductSchema.parse(data);
+    const url = new URL(request.url);
+    const id = url.searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "ID du produit manquant" },
+        { status: 400 }
+      );
+    }
+
+    const existingProduct = await prisma.product.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!existingProduct) {
+      return NextResponse.json(
+        { error: "Produit non trouvé" },
+        { status: 404 }
+      );
+    }
 
     const product = await prisma.product.delete({
-      where: { id: validatedData.id },
+      where: { id: parseInt(id) },
     });
 
     return NextResponse.json(

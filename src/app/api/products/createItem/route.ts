@@ -1,8 +1,16 @@
 import { validateAdmin } from "@/lib/middleware/auth";
 import prisma from "@/lib/prisma";
-import { ProductSchema } from "@/lib/validations/products";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+
+// Schéma spécifique pour la création de produit
+const CreateProductSchema = z.object({
+  name: z.string().min(1, "Le nom du produit est obligatoire"),
+  price: z.number().positive("Le prix doit être positif"),
+  picture: z.string().url("L'URL de l'image est invalide"),
+  description: z.string().optional(),
+  categoryId: z.number().int().positive("La catégorie est obligatoire"),
+});
 
 export async function POST(request: Request) {
   try {
@@ -15,7 +23,8 @@ export async function POST(request: Request) {
     }
 
     const data = await request.json();
-    const validatedData = ProductSchema.parse(data);
+
+    const validatedData = CreateProductSchema.parse(data);
 
     const product = await prisma.product.create({
       data: {
@@ -40,7 +49,10 @@ export async function POST(request: Request) {
       );
     }
     return NextResponse.json(
-      { error: "Erreur lors de la création du produit", details: error },
+      {
+        error: "Erreur lors de la création du produit",
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }

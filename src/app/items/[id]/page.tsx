@@ -14,25 +14,22 @@ export default function Items() {
 
   useEffect(() => {
     const loadProduct = async () => {
-      try {
-        const productData = await fetchOneProduct(id as string);
-        setProduct(productData);
-      } catch (error) {
-        console.error("Erreur lors du chargement du produit:", error);
+      const productData = await fetchOneProduct(id as string);
+
+      if (!productData) {
         router.push("/error");
-      } finally {
-        setLoading(false);
+        return;
       }
+      setProduct(productData);
     };
-    if (id) {
-      loadProduct();
-    }
+    loadProduct();
+    setLoading(false);
   }, [id, router]);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+        <span className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></span>
       </div>
     );
   }

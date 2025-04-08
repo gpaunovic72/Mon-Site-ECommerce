@@ -1,10 +1,12 @@
 "use client";
 
 import { useAdminRole } from "@/hooks/useAdminRole";
+import { checkAdminRole } from "@/lib/api/checkAdminRole";
+import { fetchDeleteProduct } from "@/lib/api/products";
 import { Product } from "@prisma/client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Button from "./Button";
-
 type CardProps = {
   products: Product[];
   selectedCategory: string | null;
@@ -16,7 +18,22 @@ export default function Card({
   selectedCategory,
   search,
 }: CardProps) {
+  const router = useRouter();
   const { isAdmin } = useAdminRole();
+
+  const handleDeleteProduct = async (product: Product) => {
+    try {
+      const isAdmin = await checkAdminRole();
+      if (!isAdmin) {
+        router.push("/login");
+        return;
+      }
+      await fetchDeleteProduct(product.id.toString());
+      router.push("/");
+    } catch (error) {
+      console.error("Erreur lors de la suppression du produit:", error);
+    }
+  };
 
   let filteredProducts = selectedCategory
     ? products.filter(
@@ -69,19 +86,20 @@ export default function Card({
                 <Button
                   href={`/items/${product.id}`}
                   text="Voir plus"
-                  className="bg-black text-white font-bold cursor-pointer hover:bg-gray-800 transition-colors duration-300 text-sm sm:text-base"
+                  className="bg-black text-white font-bold cursor-pointer hover:bg-gray-800 hover:scale-105 transition-colors duration-300 text-sm sm:text-base"
                 />
                 {isAdmin && (
                   <div className="flex gap-2 w-full">
                     <Button
-                      href="#"
+                      href={`/editProduct/${product.id}`}
                       text="Modifier"
-                      className="bg-blue-500 text-white font-bold cursor-pointer hover:bg-blue-600 transition-colors duration-300 text-xs sm:text-sm"
+                      className="bg-blue-500 text-white font-bold cursor-pointer hover:bg-blue-600 hover:scale-105 transition-colors duration-300 text-xs sm:text-sm"
                     />
                     <Button
-                      href="#"
+                      href="/"
+                      onClick={() => handleDeleteProduct(product)}
                       text="Supprimer"
-                      className="bg-red-500 text-white font-bold cursor-pointer hover:bg-red-600 transition-colors duration-300 text-xs sm:text-sm"
+                      className="bg-red-500 text-white font-bold cursor-pointer hover:bg-red-600 hover:scale-105 transition-colors duration-300 text-xs sm:text-sm"
                     />
                   </div>
                 )}
