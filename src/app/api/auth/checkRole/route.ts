@@ -5,12 +5,8 @@ export async function GET(request: Request) {
   try {
     const authResult = await validateAuth(request);
 
-    if ("error" in authResult) {
-      return NextResponse.json({ isAdmin: false }, { status: 401 });
-    }
-
     return NextResponse.json(
-      { isAdmin: authResult.user.role === "admin" },
+      { isAdmin: authResult.user?.role === "admin" },
       { status: 200 }
     );
   } catch (error) {

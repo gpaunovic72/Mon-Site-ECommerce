@@ -2,8 +2,13 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 async function createAdmin() {
   try {
-    const adminEmail = "admin@gmail.com";
-    const adminPassword = "admin123";
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminEmail || !adminPassword) {
+      console.error("Les identifiants admin ne sont pas définis");
+      return;
+    }
 
     const existingAdmin = await prisma.user.findUnique({
       where: { email: adminEmail },

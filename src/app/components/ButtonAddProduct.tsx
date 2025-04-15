@@ -1,25 +1,18 @@
 "use Client";
+import { fetchPostCart } from "@/lib/api/cart";
 import { Product } from "@prisma/client";
-
 type ButtonAddProductProps = {
   product: Product;
 };
 
 export default function ButtonAddProduct({ product }: ButtonAddProductProps) {
-  const addToCart = () => {
-    console.log("Ajout de ", product);
-    const currentCarts: Product[] = JSON.parse(
-      localStorage.getItem("carts") || "[]"
-    );
-
-    const existingProduct = currentCarts.find((p) => p.id === product.id);
-    if (existingProduct) {
-      existingProduct.quantity = (existingProduct.quantity || 1) + 1;
-    } else {
-      currentCarts.push({ ...product, quantity: 1 });
+  const addToCart = async () => {
+    try {
+      const cart = await fetchPostCart(product.id, 1);
+      if (!cart) return;
+    } catch (error) {
+      console.error("Erreur lors de l'ajout au panier:", error);
     }
-
-    localStorage.setItem("carts", JSON.stringify(currentCarts));
   };
 
   return (

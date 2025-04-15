@@ -59,21 +59,20 @@ export default function Card({
         {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="border border-[#C4C4C4] bg-[#CCCCCC] rounded-2xl flex flex-col w-full hover:shadow-lg transition-shadow duration-300"
+            className="border border-[#C4C4C4] bg-[#CCCCCC] rounded-2xl flex flex-col h-full hover:shadow-lg transition-shadow duration-300"
           >
             <div className="aspect-square w-full flex items-center justify-center bg-white rounded-t-2xl p-4">
-              <div className="relative w-[80%] h-[80%]">
+              <div className="relative w-full h-[200px]">
                 <Image
                   src={product.picture || ""}
                   alt={`Photo de ${product.name}`}
                   fill
-                  style={{ objectFit: "contain" }}
-                  className="rounded-t-2xl"
+                  className="object-contain"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
             </div>
-            <div className="flex flex-col p-4 gap-3">
+            <div className="flex flex-col p-4 gap-3 flex-grow justify-between">
               <div>
                 <h3 className="text-center text-black font-bold px-2 line-clamp-2">
                   {product.name}

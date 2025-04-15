@@ -1,5 +1,8 @@
 export async function checkAdminRole() {
   const token = localStorage.getItem("token");
+  if (!token) {
+    return { isAdmin: false };
+  }
   const session = await fetch("/api/auth/checkRole", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -7,7 +10,7 @@ export async function checkAdminRole() {
   });
 
   if (!session.ok) {
-    return false;
+    return { isAdmin: false };
   }
   return session.json();
 }
