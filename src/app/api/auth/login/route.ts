@@ -1,7 +1,9 @@
 import { LoginFormData, LoginFormSchema } from "@/app/login/schemas/schemas";
+import { mergeCartItems } from "@/lib/mergeCartItem";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -53,10 +55,24 @@ export async function POST(request: Request) {
     }
 
     const token = jwt.sign(
-      { userId: user?.id, email: user?.email, role: user?.role },
+      {
+        userId: user?.id,
+        email: user?.email,
+        role: user?.role,
+        password: "[MASKED]",
+      },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
+
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get("cart_session_id")?.value;
+
+    if (sessionId && user) {
+      await mergeCartItems(user.id, sessionId);
+
+      cookieStore.delete("cart_session_id");
+    }
 
     return NextResponse.json(
       {

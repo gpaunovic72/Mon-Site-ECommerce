@@ -1,11 +1,14 @@
 export async function fetchPostCart(productId: number, quantity: number) {
   try {
     const token = localStorage.getItem("token");
+    const sessionId = localStorage.getItem("sessionId");
+
     const response = await fetch("/api/cart/add", {
       method: "POST",
       body: JSON.stringify({
         productId: productId,
         quantity: quantity,
+        sessionId: sessionId,
       }),
       headers: {
         "Content-Type": "application/json",
