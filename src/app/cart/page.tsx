@@ -1,18 +1,28 @@
 "use client";
 
+import { useCart } from "@/hooks/useCart";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
-import { type Products } from "../datas/productsList";
+
+type CartItem = {
+  id: number;
+  quantity: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+  };
+};
 
 export default function Cart() {
-  const [carts, setCarts] = useState<Products[]>([]);
+  const { cartItems, isLoading, error } = useCart();
+  const [carts, setCarts] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const storedCarts: Products[] = JSON.parse(
-      localStorage.getItem("carts") || "[]"
-    );
-    setCarts(storedCarts);
-  }, []);
+    if (cartItems) {
+      setCarts(cartItems);
+    }
+  }, [cartItems]);
 
   const removeFromCart = (id: number) => {
     const updatedCarts = carts.filter((p) => p.id !== id);
@@ -36,9 +46,26 @@ export default function Cart() {
   };
 
   const total = carts.reduce(
-    (sum, product) => sum + (product.price || 0) * (product.quantity || 1),
+    (sum, item) => sum + (item.product.price || 0) * (item.quantity || 1),
     0
   );
+
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-gray-300 min-h-screen flex flex-col justify-center items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 bg-gray-300 min-h-screen flex flex-col justify-center items-center">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 bg-gray-300 min-h-screen flex flex-col justify-center gap-5">
       <div className="border max-w-6xl p-4 bg-white mx-auto w-full">
@@ -60,26 +87,26 @@ export default function Cart() {
             </div>
 
             <ul className="divide-y divide-gray-200">
-              {carts.map((product) => (
+              {carts.map((item) => (
                 <li
-                  key={product.id}
+                  key={item.id}
                   className="grid grid-cols-5 gap-4 px-4 py-4 items-center"
                 >
-                  <div className="font-bold truncate">{product.name}</div>
+                  <div className="font-bold truncate">{item.product.name}</div>
 
-                  <div className="text-center">{product.price} €</div>
+                  <div className="text-center">{item.product.price} €</div>
 
                   <div className="flex items-center justify-center gap-2">
                     <button
                       className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition-colors duration-300 hover:scale-105"
-                      onClick={() => updateQuantity(product.id, -1)}
+                      onClick={() => updateQuantity(item.id, -1)}
                     >
                       -
                     </button>
-                    <span className="w-12 text-center">{product.quantity}</span>
+                    <span className="w-12 text-center">{item.quantity}</span>
                     <button
                       className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition-colors duration-300 hover:scale-105"
-                      onClick={() => updateQuantity(product.id, 1)}
+                      onClick={() => updateQuantity(item.id, 1)}
                     >
                       +
                     </button>
@@ -87,7 +114,7 @@ export default function Cart() {
 
                   <div className="flex justify-center gap-2">
                     <button
-                      onClick={() => removeFromCart(product.id)}
+                      onClick={() => removeFromCart(item.id)}
                       className="px-3 py-1 text-red-500 hover:text-red-700 font-bold cursor-pointer transition-colors duration-300 hover:scale-105"
                     >
                       Supprimer
@@ -95,7 +122,7 @@ export default function Cart() {
                   </div>
 
                   <div className="text-right font-bold">
-                    {(product.price || 0) * (product.quantity || 1)} €
+                    {(item.product.price || 0) * (item.quantity || 1)} €
                   </div>
                 </li>
               ))}

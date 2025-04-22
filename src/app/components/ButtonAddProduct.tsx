@@ -15,12 +15,7 @@ export default function ButtonAddProduct({ product }: ButtonAddProductProps) {
     try {
       setIsLoading(true);
       setError(null);
-      const result = await fetchPostCart(product.id, 1);
-
-      // Si un nouveau sessionId est créé, on le sauvegarde
-      if (result.newSessionId) {
-        localStorage.setItem("cartSessionId", result.newSessionId);
-      }
+      await fetchPostCart(product.id, 1);
     } catch (error) {
       setError(
         error instanceof Error ? error.message : "Une erreur est survenue"

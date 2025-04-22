@@ -2,13 +2,24 @@
 
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { useCart } from "@/hooks/useCart";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 
 export default function Header() {
   const { isAdmin } = useAdminRole();
   const { isLoggedIn, handleLogout } = useAuthStatus();
+  const { cartItems } = useCart();
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    if (cartItems) {
+      const count = cartItems.reduce((total, item) => total + item.quantity, 0);
+      setCartCount(count);
+    }
+  }, [cartItems]);
 
   return (
     <header className="flex flex-col items-center gap-5 bg-gradient-to-t from-black to-[#666666] py-9 ">
@@ -24,8 +35,8 @@ export default function Header() {
           <Link href="/">Accueil</Link>
           <Link href="/#category">Catégories</Link>
           <Link href="/#items">Articles</Link>
-          <Link href="#">Contact</Link>
-          <Link href="/cart">
+          <Link href="/#contact">Contact</Link>
+          <Link href="/cart" className="relative">
             <Image
               src="/images/icons/icon-panier.svg"
               alt="Panier"
@@ -33,6 +44,11 @@ export default function Header() {
               height={40}
               style={{ width: "auto", height: "auto" }}
             />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </nav>
         <div className="flex items-center justify-center gap-5">
