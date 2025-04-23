@@ -59,3 +59,35 @@ export async function fetchGetCart() {
     throw error;
   }
 }
+
+export async function fetchUpdateCart(productId: number, quantity: number) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch("/api/cart/update", {
+      method: "POST",
+      body: JSON.stringify({
+        productId: productId,
+        quantity: quantity,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Erreur lors de la mise à jour du panier");
+    }
+
+    window.dispatchEvent(new Event("cartUpdated"));
+
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du panier:", error);
+    throw error;
+  }
+}

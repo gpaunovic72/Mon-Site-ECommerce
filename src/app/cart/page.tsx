@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
+import { fetchUpdateCart } from "@/lib/api/cart";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
 
@@ -30,19 +31,21 @@ export default function Cart() {
     localStorage.setItem("carts", JSON.stringify(updatedCarts));
   };
 
-  const updateQuantity = (id: number, change: number) => {
-    const updatedCarts = carts.map((product) => {
-      if (product.id === id) {
-        const newQuantity = (product.quantity || 1) + change;
-        if (newQuantity > 0) {
-          return { ...product, quantity: newQuantity };
-        }
-      }
-      return product;
-    });
+  const updateQuantity = async (productId: number, newQuantity: number) => {
+    try {
+      if (newQuantity < 1) return;
 
-    setCarts(updatedCarts);
-    localStorage.setItem("carts", JSON.stringify(updatedCarts));
+      await fetchUpdateCart(productId, newQuantity);
+
+      const updatedItems = cartItems.map((item) =>
+        item.product.id === productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      );
+      setCarts(updatedItems);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du panier:", error);
+    }
   };
 
   const total = carts.reduce(
@@ -99,14 +102,18 @@ export default function Cart() {
                   <div className="flex items-center justify-center gap-2">
                     <button
                       className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition-colors duration-300 hover:scale-105"
-                      onClick={() => updateQuantity(item.id, -1)}
+                      onClick={() =>
+                        updateQuantity(item.product.id, item.quantity - 1)
+                      }
                     >
                       -
                     </button>
                     <span className="w-12 text-center">{item.quantity}</span>
                     <button
                       className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition-colors duration-300 hover:scale-105"
-                      onClick={() => updateQuantity(item.id, 1)}
+                      onClick={() =>
+                        updateQuantity(item.product.id, item.quantity + 1)
+                      }
                     >
                       +
                     </button>
