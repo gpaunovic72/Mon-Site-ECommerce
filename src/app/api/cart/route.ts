@@ -6,36 +6,23 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const auth = await validateAuth(request);
-    const userId = auth?.user?.userId || null;
+    const userId = auth?.user?.userId;
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get("cart_session_id")?.value;
 
-    if (userId) {
-      const cart = await prisma.cart.findMany({
-        where: {
-          userId: userId,
-        },
-        include: {
-          product: true,
-        },
-      });
-      return NextResponse.json(cart, { status: 200 });
-    } else {
-      const cookieStore = await cookies();
-      const sessionId = cookieStore.get("cart_session_id")?.value || null;
+    const cart = await prisma.cart.findMany({
+      where: {
+        OR: [
+          { userId: userId || undefined },
+          { sessionId: sessionId || undefined },
+        ],
+      },
+      include: {
+        product: true,
+      },
+    });
 
-      if (!sessionId) {
-        return NextResponse.json([], { status: 200 });
-      }
-
-      const cart = await prisma.cart.findMany({
-        where: {
-          sessionId: sessionId,
-        },
-        include: {
-          product: true,
-        },
-      });
-      return NextResponse.json(cart, { status: 200 });
-    }
+    return NextResponse.json(cart, { status: 200 });
   } catch (error) {
     console.error("Erreur lors de la récupération du panier:", error);
     return NextResponse.json(

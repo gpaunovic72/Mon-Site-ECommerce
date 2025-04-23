@@ -18,7 +18,6 @@ export function useCart() {
   const [error, setError] = useState<string | null>(null);
   const { isLoggedIn } = useAuthStatus();
 
-  // Fonction pour rafraîchir le panier
   const refreshCart = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -36,20 +35,15 @@ export function useCart() {
     }
   }, []);
 
-  // Écouter l'événement personnalisé pour mettre à jour le panier
   useEffect(() => {
     const handleCartUpdate = () => {
       refreshCart();
     };
 
     window.addEventListener("cartUpdated", handleCartUpdate);
-
-    return () => {
-      window.removeEventListener("cartUpdated", handleCartUpdate);
-    };
+    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, [refreshCart]);
 
-  // Charger le panier initial
   useEffect(() => {
     refreshCart();
   }, [refreshCart, isLoggedIn]);

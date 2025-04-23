@@ -3,9 +3,9 @@ import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function DELETE(request: NextRequest) {
   try {
-    const { productId, quantity } = await request.json();
+    const { productId } = await request.json();
 
     const auth = await validateAuth(request);
     const userId = auth?.user?.userId || null;
@@ -14,21 +14,18 @@ export async function POST(request: NextRequest) {
     const sessionId = cookieStore.get("cart_session_id")?.value || null;
 
     const whereCondition = userId
-      ? { userId_productId: { userId, productId } }
-      : { sessionId_productId: { sessionId: sessionId || "", productId } };
+      ? { userId, productId }
+      : { sessionId, productId };
 
-    const updateCart = await prisma.cart.update({
+    const deleteCart = await prisma.cart.deleteMany({
       where: whereCondition,
-      data: {
-        quantity,
-      },
     });
 
-    return NextResponse.json(updateCart, { status: 200 });
+    return NextResponse.json(deleteCart, { status: 200 });
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du panier:", error);
+    console.error("Erreur lors de la suppression du panier:", error);
     return NextResponse.json(
-      { error: "Erreur lors de la mise à jour du panier" },
+      { error: "Erreur lors de la suppression du panier" },
       { status: 500 }
     );
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
-import { fetchUpdateCart } from "@/lib/api/cart";
+import { fetchDeleteCart, fetchUpdateCart } from "@/lib/api/cart";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
 
@@ -25,10 +25,13 @@ export default function Cart() {
     }
   }, [cartItems]);
 
-  const removeFromCart = (id: number) => {
-    const updatedCarts = carts.filter((p) => p.id !== id);
-    setCarts(updatedCarts);
-    localStorage.setItem("carts", JSON.stringify(updatedCarts));
+  const removeFromCart = async (id: number) => {
+    try {
+      await fetchDeleteCart(id);
+      window.dispatchEvent(new Event("cartUpdated"));
+    } catch (error) {
+      console.error("Erreur lors de la suppression du panier:", error);
+    }
   };
 
   const updateQuantity = async (productId: number, newQuantity: number) => {
@@ -121,7 +124,7 @@ export default function Cart() {
 
                   <div className="flex justify-center gap-2">
                     <button
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.product.id)}
                       className="px-3 py-1 text-red-500 hover:text-red-700 font-bold cursor-pointer transition-colors duration-300 hover:scale-105"
                     >
                       Supprimer

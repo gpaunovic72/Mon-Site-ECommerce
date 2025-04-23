@@ -91,3 +91,32 @@ export async function fetchUpdateCart(productId: number, quantity: number) {
     throw error;
   }
 }
+
+export async function fetchDeleteCart(productId: number) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch("/api/cart/delete", {
+      method: "DELETE",
+      body: JSON.stringify({ productId }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Erreur lors de la suppression du panier");
+    }
+
+    window.dispatchEvent(new Event("cartUpdated"));
+
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la suppression du panier:", error);
+    throw error;
+  }
+}
