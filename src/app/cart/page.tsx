@@ -2,9 +2,9 @@
 
 import { useCart } from "@/hooks/useCart";
 import { fetchDeleteCart, fetchUpdateCart } from "@/lib/api/cart";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
-
 type CartItem = {
   id: number;
   quantity: number;
@@ -12,6 +12,7 @@ type CartItem = {
     id: number;
     name: string;
     price: number;
+    picture: string;
   };
 };
 
@@ -98,7 +99,15 @@ export default function Cart() {
                   key={item.id}
                   className="grid grid-cols-5 gap-4 px-4 py-4 items-center"
                 >
-                  <div className="font-bold truncate">{item.product.name}</div>
+                  <div>
+                    <Image
+                      src={item.product.picture}
+                      alt={item.product.name}
+                      width={100}
+                      height={100}
+                      className="w-50 h-50 object-cover"
+                    />
+                  </div>
 
                   <div className="text-center">{item.product.price} €</div>
 

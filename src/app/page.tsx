@@ -11,6 +11,7 @@ export default async function Home() {
       <Banner
         picture="/images/basketSport-1.webp"
         title="Chaussures de sport pour hommes"
+        articleId="8"
       />
       <FilterControls initialProducts={products} />
     </main>
