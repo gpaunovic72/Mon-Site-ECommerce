@@ -13,7 +13,8 @@ export const ProductSchema = z.object({
         return value;
       })
       .refine(
-        (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+        (file) =>
+          ["image/jpeg", "image/png", "image/webp"].includes(file?.type),
         "Le format de la photo est invalide"
       )
       .refine(

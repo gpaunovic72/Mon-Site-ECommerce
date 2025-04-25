@@ -1,24 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mon Site E-Commerce
 
-## Getting Started
+Un site e-commerce complet développé avec Next.js, TypeScript et Prisma. Ce projet fait partie de ma formation en développement web.
 
-First, run the development server:
+## 📸 Captures d'écran
+
+### Page d'accueil
+
+![Page d'accueil](public/screenshots/homepage.png)
+
+### Page de connexion
+
+![Page de connexion](public/screenshots/login.png)
+
+### Page d'inscription
+
+! [Page d'inscription](public/screenshots/signup.png)
+
+### Page des produits
+
+![Page des produits](public/screenshots/products.png)
+
+### Panier
+
+![Panier](public/screenshots/cart.png)
+
+### Interface administrateur
+
+![Interface administrateur](public/screenshots/admin.png)
+![Ajout de produit](public/screenshots/addProduct.png)
+
+## 🚀 Fonctionnalités
+
+- **Authentification** : Inscription et connexion des utilisateurs
+- **Gestion des produits** : Ajout, modification et suppression des produits
+- **Panier** : Ajout, modification et suppression d'articles
+- **Catégories** : Organisation des produits par catégories
+- **Interface administrateur** : Gestion complète des produits
+
+## 🛠 Technologies utilisées
+
+- **Frontend** : Next.js, TypeScript, Tailwind CSS
+- **Backend** : API Routes Next.js
+- **Base de données** : PostgreSQL avec Prisma
+- **Authentification** : JWT avec cookies sécurisés
+- **Gestion des images** : Upload et stockage local
+
+## 📦 Installation
+
+1. Cloner le repository :
+
+```bash
+git clone [https://github.com/gpaunovic72/Mon-Site-ECommerce]
+```
+
+2. Installer les dépendances :
+
+```bash
+npm install
+```
+
+3. Configurer la base de données :
+
+- Créer un fichier `.env` à la racine
+- Ajouter les variables d'environnement nécessaires
+
+4. Lancer le serveur de développement :
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Fonctionnalités détaillées
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Authentification
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Inscription avec validation des données
+- Connexion avec token JWT
+- Protection des routes administrateur
+- Gestion des sessions
+
+### Gestion des produits
+
+- CRUD complet des produits
+- Upload d'images
+- Organisation par catégories
+- Interface responsive
+
+### Panier
+
+- Ajout/Suppression de produits
+- Modification des quantités
+- Persistance des données
+- Fusion des paniers lors de la connexion
+
+## 🔒 Sécurité
+
+- Validation des données côté serveur
+- Protection contre les injections SQL
+- Gestion sécurisée des tokens
+- Middleware d'authentification
+
+## 📝 Notes
+
+Ce projet a été développé dans le cadre d'une formation. Il n'est pas destiné à une utilisation en production mais sert de démonstration de mes compétences en développement web.
+
+## 👨‍💻 Auteur
+
+Paunovic Goran
 
 ## Learn More
 

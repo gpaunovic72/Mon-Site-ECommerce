@@ -74,12 +74,6 @@ export default function Items() {
                 {product.description}
               </p>
             </div>
-
-            <div className="border-t border-gray-200 pt-4">
-              <h2 className="text-lg font-semibold text-gray-900">Catégorie</h2>
-              <p className="mt-2 text-gray-600">{product.categoryId}</p>
-            </div>
-
             <div className="border-t border-gray-200 pt-4">
               <ButtonAddProduct product={product} />
             </div>

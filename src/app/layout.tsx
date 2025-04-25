@@ -18,10 +18,10 @@ export default function RootLayout({
     <html lang="fr">
       <body
         suppressHydrationWarning={deleteHydratationWarning}
-        className="max-h-fit"
+        className="min-h-screen flex flex-col"
       >
         <Header />
-        {children}
+        <main className="flex-grow">{children}</main>
         <Footer />
       </body>
     </html>
