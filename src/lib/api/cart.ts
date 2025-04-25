@@ -1,7 +1,5 @@
 export async function fetchPostCart(productId: number, quantity: number) {
   try {
-    const token = localStorage.getItem("token");
-
     const response = await fetch("/api/cart/add", {
       method: "POST",
       body: JSON.stringify({
@@ -10,7 +8,6 @@ export async function fetchPostCart(productId: number, quantity: number) {
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     });
@@ -33,22 +30,15 @@ export async function fetchPostCart(productId: number, quantity: number) {
 
 export async function fetchGetCart() {
   try {
-    const token = localStorage.getItem("token");
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-
     const response = await fetch("/api/cart", {
       method: "GET",
-      headers,
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
     });
 
     const data = await response.json();
-
     if (!response.ok) {
       throw new Error(data.error || "Erreur lors de la récupération du panier");
     }
@@ -62,8 +52,6 @@ export async function fetchGetCart() {
 
 export async function fetchUpdateCart(productId: number, quantity: number) {
   try {
-    const token = localStorage.getItem("token");
-
     const response = await fetch("/api/cart/update", {
       method: "POST",
       body: JSON.stringify({
@@ -72,7 +60,6 @@ export async function fetchUpdateCart(productId: number, quantity: number) {
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     });
@@ -94,14 +81,11 @@ export async function fetchUpdateCart(productId: number, quantity: number) {
 
 export async function fetchDeleteCart(productId: number) {
   try {
-    const token = localStorage.getItem("token");
-
     const response = await fetch("/api/cart/delete", {
       method: "DELETE",
       body: JSON.stringify({ productId }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     });

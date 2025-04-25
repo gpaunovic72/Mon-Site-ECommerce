@@ -59,7 +59,6 @@ export async function POST(request: Request) {
         userId: user?.id,
         email: user?.email,
         role: user?.role,
-        password: "[MASKED]",
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
@@ -77,10 +76,18 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         message: "Connexion réussie",
-        user,
-        token,
+        user: {
+          id: user?.id,
+          name: user?.name,
+          firstname: user?.firstname,
+        },
       },
-      { status: 200 }
+      {
+        headers: {
+          "Set-Cookie": `token=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict; Secure`,
+        },
+        status: 200,
+      }
     );
   } catch (err) {
     if (err instanceof z.ZodError) {

@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 export type AuthUser = {
   userId: number;
@@ -6,15 +7,12 @@ export type AuthUser = {
   role: string;
 };
 
-export async function validateAuth(request: Request) {
-  const authHeader = request.headers.get("Authorization");
-  if (!authHeader) {
-    return { error: "Token manquant", status: 401 };
-  }
+export async function validateAuth() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
 
-  const token = authHeader.replace("Bearer ", "");
   if (!token) {
-    return { error: "Token invalide", status: 401 };
+    return { error: "Token manquant", status: 401 };
   }
 
   if (!process.env.JWT_SECRET) {
@@ -29,8 +27,8 @@ export async function validateAuth(request: Request) {
   }
 }
 
-export async function validateAdmin(request: Request) {
-  const authResult = await validateAuth(request);
+export async function validateAdmin() {
+  const authResult = await validateAuth();
   if ("error" in authResult) {
     return authResult;
   }

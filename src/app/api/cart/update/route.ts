@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   try {
     const { productId, quantity } = await request.json();
 
-    const auth = await validateAuth(request);
+    const auth = await validateAuth();
     const userId = auth?.user?.userId || null;
 
     const cookieStore = await cookies();

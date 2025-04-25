@@ -1,11 +1,11 @@
 import { validateAuth } from "@/lib/middleware/auth";
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const auth = await validateAuth(request);
+    const auth = await validateAuth();
     const userId = auth?.user?.userId;
     const cookieStore = await cookies();
     const sessionId = cookieStore.get("cart_session_id")?.value;

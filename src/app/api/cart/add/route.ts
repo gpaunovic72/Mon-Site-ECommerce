@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const auth = await validateAuth(request);
+    const auth = await validateAuth();
     const userId = auth?.user?.userId || null;
 
     const { productId, quantity } = await request.json();
