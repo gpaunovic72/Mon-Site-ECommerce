@@ -14,7 +14,7 @@ Un site e-commerce complet développé avec Next.js, TypeScript et Prisma. Ce pr
 
 ### Page d'inscription
 
-! [Page d'inscription](public/screenshots/signup.png)
+![Page d'inscription](public/screenshots/signup.png)
 
 ### Page des produits
 
