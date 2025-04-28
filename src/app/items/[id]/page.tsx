@@ -1,10 +1,15 @@
 "use client";
 import ButtonAddProduct from "@/app/components/ButtonAddProduct";
 import { fetchOneProduct } from "@/lib/api/products";
+import { generateProductMetadata } from "@/lib/metadata/productMetadata";
 import { Product } from "@prisma/client";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  return generateProductMetadata(parseInt(params.id));
+}
 
 export default function Items() {
   const { id } = useParams();

@@ -1,7 +1,21 @@
 import { fetchProducts } from "@/lib/api/products";
 import { Product } from "@prisma/client";
+import { Metadata } from "next";
 import Banner from "./components/Banner";
 import FilterControls from "./components/FilterControls";
+
+export const metadata: Metadata = {
+  title: "Accueil | Mon Site E-Commerce",
+  description:
+    "Découvrez notre sélection de produits de qualité. Livraison rapide et paiement sécurisé.",
+  openGraph: {
+    title: "Mon Site E-Commerce - Votre boutique en ligne",
+    description:
+      "Découvrez notre sélection de produits de qualité. Livraison rapide et paiement sécurisé.",
+    images: ["/images/basketSport-1.webp"],
+    type: "website",
+  },
+};
 
 export default async function Home() {
   const products: Product[] = await fetchProducts();

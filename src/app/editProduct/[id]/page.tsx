@@ -6,8 +6,18 @@ import { fetchOneProduct, fetchUpdateProduct } from "@/lib/api/products";
 import { uploadPictures } from "@/lib/api/uploadPictures";
 import { ProductInput } from "@/lib/validations/products";
 import { Product } from "@prisma/client";
+import { Metadata } from "next";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+export const metadata: Metadata = {
+  title: "Modifier un produit",
+  description: "Modifier un produit",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function EditProduct() {
   const router = useRouter();

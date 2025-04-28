@@ -1,9 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { LoginFormData, LoginFormSchema } from "./schemas/schemas";
+
+export const metadata: Metadata = {
+  title: "Connexion",
+  description:
+    "Connectez-vous à votre compte pour accéder à votre espace personnalisé",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function Login() {
   const router = useRouter();

@@ -1,9 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { SignupFormData, SignupFormSchema } from "./schemas/schemas";
+
+export const metadata: Metadata = {
+  title: "Inscription",
+  description:
+    "Inscrivez-vous à votre compte pour accéder à votre espace personnalisé",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function Signup() {
   const router = useRouter();

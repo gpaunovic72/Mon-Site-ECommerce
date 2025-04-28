@@ -2,9 +2,20 @@
 
 import { useCart } from "@/hooks/useCart";
 import { fetchDeleteCart, fetchUpdateCart } from "@/lib/api/cart";
+import { Metadata } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
+
+export const metadata: Metadata = {
+  title: "Panier | Mon Site E-Commerce",
+  description: "Consultez votre panier d'achat.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 type CartItem = {
   id: number;
   quantity: number;

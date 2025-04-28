@@ -4,9 +4,19 @@ import { checkAdminRole } from "@/lib/api/checkAdminRole";
 import { fetchCreateProduct } from "@/lib/api/products";
 import { uploadPictures } from "@/lib/api/uploadPictures";
 import { ProductInput } from "@/lib/validations/products";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProductForm from "../components/ProductForm";
+
+export const metadata: Metadata = {
+  title: "Ajouter un produit | Mon Site E-Commerce",
+  description: "Ajoutez un nouveau produit à votre boutique en ligne.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function AddProducts() {
   const router = useRouter();
